@@ -3,7 +3,6 @@
 pragma solidity ^0.8.0;  
 
 contract Set {
-
     mapping(uint => bool) set;
     uint size;
 
@@ -16,7 +15,6 @@ contract Set {
         size++;
         emit Insert(key);
         return true;
-
     }
 
     function remove(uint key) external check(key) returns (bool) {
