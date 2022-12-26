@@ -4,25 +4,34 @@ pragma solidity ^0.8.0;
 
 contract Set {
 
-    mapping(address => uint) internal balances;
+    mapping(uint => bool) set;
+    uint size;
 
-    function insert(address addr, uint bal) external returns (bool) {
-        require(balances[addr] == 0,"Address already exist");
-        balances[addr] = bal;
+    event Insert(uint);
+    event Remove(uint);
+
+    function insert(uint key) external returns (bool) {
+        require(!set[key],"Already exist");
+        set[key] = true;
+        size++;
+        emit Insert(key);
+        return true;
+
+    }
+
+    function remove(uint key) external check(key) returns (bool) {
+        delete set[key];
+        size--;
+        emit Remove(key);
         return true;
     }
 
-    function remove(address addr) external check(addr) returns (bool) {
-        delete balances[addr];
-        return true;
+    function len() external view returns (uint) {
+        return size;
     }
 
-    function get(address addr) external view check(addr) returns (uint) {
-        return balances[addr];
-    }
-
-    modifier check(address addr) {
-        require(balances[addr] != 0, "Balance does not exist");
+    modifier check(uint key) {
+        require(set[key], "Does not exist");
         _;
     } 
 }
