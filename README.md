@@ -1,1 +1,1 @@
-Simple set with Solidity
+Unordered set with Solidity
