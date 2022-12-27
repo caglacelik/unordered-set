@@ -3,10 +3,15 @@
 pragma solidity ^0.8.0;  
 
 contract Set {
+<<<<<<< HEAD
 
     mapping(address => uint) private set;
     mapping(address => bool) private exist;
     uint private size;
+=======
+    mapping(uint => bool) set;
+    uint size;
+>>>>>>> 4b28e3652102d966a60bd21f53770eb8acd1219d
 
     event Log(string name, address indexed addr, uint val);
 
