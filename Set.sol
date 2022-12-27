@@ -4,25 +4,26 @@ pragma solidity ^0.8.0;
 
 contract Set {
 
-    mapping(uint => bool) set;
-    uint size;
+    mapping(address => uint) private set;
+    mapping(address => bool) private exist;
+    uint private size;
 
-    event Insert(uint);
-    event Remove(uint);
+    event Log(string name, address indexed addr, uint val);
 
-    function insert(uint key) external returns (bool) {
-        require(!set[key],"Already exist");
-        set[key] = true;
+    function insert(address addr, uint val) external returns(bool) {
+        require(!exist[addr], "Already exist");
+        set[addr] = val;
+        exist[addr] = true;
         size++;
-        emit Insert(key);
+        emit Log("insert", addr, val);
         return true;
-
     }
 
-    function remove(uint key) external check(key) returns (bool) {
-        delete set[key];
+    function remove(address addr) external check(addr) returns(bool) {
+        delete set[addr];
+        exist[addr] = false;
         size--;
-        emit Remove(key);
+        emit Log("remove", addr, set[addr]);
         return true;
     }
 
@@ -30,8 +31,12 @@ contract Set {
         return size;
     }
 
-    modifier check(uint key) {
-        require(set[key], "Does not exist");
+    function get(address addr) external view check(addr) returns(uint) {
+        return set[addr];
+    }
+
+    modifier check(address addr) {
+        require(exist[addr], "Does not exist");
         _;
     } 
 }
