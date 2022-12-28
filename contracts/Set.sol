@@ -3,10 +3,10 @@
 pragma solidity ^0.8.0;  
 
 contract Set {
-
-    mapping(address => uint) private set;
-    mapping(address => bool) private exist;
-    uint private size;
+    
+    mapping(address => uint) public set;
+    mapping(address => bool) public exist;
+    uint public size;
 
     event Log(string name, address indexed addr, uint val);
 
@@ -20,10 +20,11 @@ contract Set {
     }
 
     function remove(address addr) external check(addr) returns(bool) {
+        uint val = set[addr];
         delete set[addr];
         exist[addr] = false;
         size--;
-        emit Log("remove", addr, set[addr]);
+        emit Log("remove", addr, val);
         return true;
     }
 
