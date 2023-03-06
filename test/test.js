@@ -1,12 +1,13 @@
 const { expect } = require('chai');
-let contract;
 
-before (async () => {
-    contract = await (await ethers.getContractFactory("Set")).deploy();
-    await contract.deployed();
-});
 
-describe('Set', async () => {
+describe('Set', () => {
+    let contract;
+    
+    before (async () => {
+        contract = await (await ethers.getContractFactory("Set")).deploy();
+        await contract.deployed();
+    });
 
     it('Get correct value in the set set with the given address', async () => {
         await contract.insert('0x5B38Da6a701c568545dCfcB03FcB875f56beddC4', '1000');
@@ -40,3 +41,4 @@ describe('Set', async () => {
         await expect(contract.remove('0xdD870fA1b7C4700F2BD7f44238821C26f7392148')).to.be.revertedWith('Does not exist');
     });
 });
+
